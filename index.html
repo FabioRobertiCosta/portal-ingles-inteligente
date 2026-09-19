@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inglês Inteligente | Aulas Particulares e em Dupla via Teams</title>
+    <!-- Favicon Oficial da Escola -->
+    <link rel="icon" type="image/png" href="src/images/favicon.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        navy: { 950: '#050811', 900: '#0A0F1D', 800: '#121A2D', 700: '#1D2A47' },
+                        usaRed: { DEFAULT: '#EF4444', glow: '#DC2626' },
+                        usaBlue: { DEFAULT: '#2563EB', glow: '#1D4ED8' }
+                    },
+                    keyframes: {
+                        tickerInfinite: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        },
+                        infiniteGlow: {
+                            '0%, 100%': { filter: 'drop-shadow(0 0 15px rgba(239, 68, 68, 0.9)) drop-shadow(0 0 25px rgba(37, 99, 235, 0.7))' },
+                            '50%': { filter: 'drop-shadow(0 0 30px rgba(239, 68, 68, 1)) drop-shadow(0 0 40px rgba(37, 99, 235, 1))' }
+                        }
+                    },
+                    animation: {
+                        ticker: 'tickerInfinite 25s linear infinite',
+                        glow: 'infiniteGlow 3s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050811 !important; color: #f1f5f9 !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .glow-title { animation: infiniteGlow 3s ease-in-out infinite !important; }
+        @keyframes infiniteGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.9)) drop-shadow(0 0 25px rgba(37, 99, 235, 0.7)); }
+            50% { filter: drop-shadow(0 0 30px rgba(239, 68, 68, 1)) drop-shadow(0 0 40px rgba(37, 99, 235, 1)); }
+        }
+        .glass-card { background: rgba(18, 26, 45, 0.85) !important; backdrop-filter: blur(12px) !important; border: 1px solid rgba(42, 56, 89, 0.8) !important; }
+        .glass-card-featured { background: rgba(37, 99, 235, 0.18) !important; backdrop-filter: blur(12px) !important; border: 2px solid rgba(37, 99, 235, 0.9) !important; box-shadow: 0 0 30px rgba(37, 99, 235, 0.4) !important; }
+        .text-usaRed { color: #EF4444 !important; }
+        .text-usaBlue { color: #2563EB !important; }
+        .bg-usaRed { background-color: #EF4444 !important; }
+        .bg-usaBlue { background-color: #2563EB !important; }
+        
+        /* Acordeão Metodologia */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.3s ease; }
+        .accordion-item.active .accordion-content { max-height: 300px; padding-top: 1rem; padding-bottom: 1rem; }
+        .accordion-item.active .accordion-icon { transform: rotate(180deg); color: #EF4444; }
+
+        /* Custom Scrollbar do Quiz */
+        .quiz-scroll::-webkit-scrollbar { width: 6px; }
+        .quiz-scroll::-webkit-scrollbar-track { background: #0A0F1D; }
+        .quiz-scroll::-webkit-scrollbar-thumb { background: #1D2A47; border-radius: 4px; }
+        .quiz-scroll::-webkit-scrollbar-thumb:hover { background: #2563EB; }
+    </style>
+</head>
+<body class="bg-navy-950 text-slate-100 font-sans antialiased selection:bg-usaRed selection:text-white overflow-x-hidden">
+
+    <!-- HEADER / NAV -->
+    <header class="fixed top-0 w-full z-50 bg-navy-950/90 backdrop-blur-md border-b border-navy-700/50" style="background-color: rgba(5, 8, 17, 0.95); border-bottom: 1px solid #1D2A47;">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="#">
+                    <img src="src/images/logo-header.png" alt="Logo Inglês Inteligente" class="h-14 w-auto object-contain">
+                </a>
+            </div>
+            <nav class="hidden lg:flex gap-6 text-xs font-bold uppercase tracking-wider text-slate-300">
+                <a href="#modalidades" class="hover:text-usaRed transition-colors">1. Modalidades</a>
+                <a href="#ielts-toefl" class="hover:text-usaBlue transition-colors">2. IELTS & TOEFL</a>
+                <a href="#diferencial" class="hover:text-usaRed transition-colors">3. Reposições</a>
+                <a href="#metodologia" class="hover:text-usaBlue transition-colors">4. Metodologia</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button onclick="openQuizModal()" class="px-5 py-2.5 rounded-full bg-navy-800 hover:bg-navy-700 text-usaBlue border border-usaBlue/50 font-extrabold text-xs uppercase tracking-wider transition-all transform hover:scale-105 flex items-center gap-2" style="border: 1px solid rgba(37,99,235,0.5); color: #2563EB;">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i> Quiz de Nivelamento
+                </button>
+                <a href="https://wa.me/551236006887?text=Ol%C3%A1!%20Quero%20agendar%20minha%20conversa%20inicial%20sem%20compromisso." target="_blank" class="px-5 py-2.5 rounded-full bg-usaRed hover:bg-red-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-usaRed/50 transition-all transform hover:scale-105" style="background-color: #EF4444; color: #ffffff;">
+                    Conversa Inicial
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="pt-28 pb-16 px-6 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <p class="text-usaRed font-black text-2xl md:text-3xl tracking-wide uppercase mb-6 glow-title -mt-2">
+                Inglês Online Para Você Realmente Aprender a Se Comunicar
+            </p>
+            <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-8 glow-title">
+                Aulas Particulares ou em Dupla com Acompanhamento Personalizado
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Aprenda inglês de forma prática e acompanhada. Com direção clara, consistência e material didático exclusivo enviado diretamente no seu WhatsApp, você evolui no seu próprio ritmo com confiança total.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+                <button onclick="openQuizModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-usaBlue hover:bg-blue-600 text-white font-black text-lg shadow-xl hover:shadow-usaBlue/50 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3" style="background-color: #2563EB; color: #ffffff;">
+                    <i data-lucide="award" class="w-5 h-5"></i> Fazer Quiz de Nivelamento Grátis
+                </button>
+            </div>
+            <div class="inline-flex flex-wrap items-center justify-center gap-6 p-4 rounded-2xl bg-navy-900 border border-navy-800 text-xs font-bold text-slate-300" style="background-color: #0A0F1D; border: 1px solid #121A2D;">
+                <span class="flex items-center gap-2 text-emerald-400" style="color: #34d399;"><i data-lucide="check-circle" class="w-4 h-4"></i> ZERO Taxa de Matrícula</span>
+                <span class="flex items-center gap-2 text-usaBlue"><i data-lucide="file-text" class="w-4 h-4"></i> Material Digital Gratuito via WhatsApp</span>
+                <span class="flex items-center gap-2 text-usaRed"><i data-lucide="video" class="w-4 h-4"></i> Aulas 100% via Microsoft Teams</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESTEIRA INFINITA -->
+    <div class="w-full bg-navy-900 border-y border-usaRed/40 py-3 overflow-hidden whitespace-nowrap relative z-20 shadow-2xl" style="background-color: #0A0F1D; border-top: 1px solid rgba(239, 68, 68, 0.4); border-bottom: 1px solid rgba(239, 68, 68, 0.4);">
+        <div class="inline-flex animate-ticker gap-8 font-black text-xs md:text-sm tracking-wider text-white uppercase">
+            <span>🇺🇸 ENSINO AMERICANO E BRITÂNICO À SUA ESCOLHA</span> <span class="text-usaRed">///</span>
+            <span>🎓 PREPARATÓRIO ESPECIALIZADO PARA EXAMES IELTS & TOEFL</span> <span class="text-usaBlue">///</span>
+            <span>💻 AULAS AO VIVO VIA MICROSOFT TEAMS</span> <span style="color: #34d399;">///</span>
+            <span>🇺🇸 ENSINO AMERICANO E BRITÂNICO À SUA ESCOLHA</span> <span class="text-usaRed">///</span>
+            <span>🎓 PREPARATÓRIO ESPECIALIZADO PARA EXAMES IELTS & TOEFL</span> <span class="text-usaBlue">///</span>
+            <span>💻 AULAS AO VIVO VIA MICROSOFT TEAMS</span> <span style="color: #34d399;">///</span>
+        </div>
+    </div>
+
+    <!-- SEÇÃO 1: MODALIDADES -->
+    <section id="modalidades" class="py-24 px-6 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-usaRed font-black text-xl md:text-2xl uppercase tracking-wider mb-6 glow-title">
+                    Sua Jornada Personalizada
+                </p>
+                <h2 class="text-3xl md:text-5xl font-black text-white glow-title">Aulas Particulares ou em Dupla</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- Card Individual -->
+                <div class="glass-card-featured p-8 rounded-3xl relative flex flex-col justify-between">
+                    <div class="absolute -top-4 right-6 px-4 py-1 rounded-full bg-usaBlue text-white font-extrabold text-xs uppercase tracking-wider shadow-lg">
+                        ⭐ Mais Recomendado
+                    </div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-usaBlue/20 text-usaBlue flex items-center justify-center mb-6"><i data-lucide="user" class="w-8 h-8"></i></div>
+                        <span class="text-xs font-black text-usaBlue uppercase tracking-wider">Atenção 100% Exclusiva</span>
+                        <h3 class="text-3xl font-black text-white mt-1 mb-3">Aula Individual</h3>
+                        <p class="text-slate-200 text-sm leading-relaxed mb-6">
+                            Toda a aula é focada em você, nos seus objetivos específicos de carreira, viagens ou exames de proficiência, evoluindo no seu ritmo exato.
+                        </p>
+                    </div>
+                    <a href="https://wa.me/551236006887?text=Quero%20saber%20mais%20sobre%20a%20aula%20Individual!" target="_blank" class="w-full py-3 rounded-xl bg-usaBlue hover:bg-blue-600 text-white font-bold text-sm text-center shadow-lg transition-all" style="background-color: #2563EB; color: #ffffff;">
+                        Escolher Modalidade Individual
+                    </a>
+                </div>
+
+                <!-- Card Dupla -->
+                <div class="glass-card p-8 rounded-3xl relative flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-usaRed/20 text-usaRed flex items-center justify-center mb-6"><i data-lucide="users" class="w-8 h-8"></i></div>
+                        <span class="text-xs font-black text-usaRed uppercase tracking-wider">Interação & Economia</span>
+                        <h3 class="text-3xl font-black text-white mt-1 mb-3">Aula em Dupla</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Aprenda com seu parceiro, amigo, irmão ou colega de trabalho. Compartilhe interações reais de conversação e divida o investimento.
+                        </p>
+                    </div>
+                    <a href="https://wa.me/551236006887?text=Quero%20saber%20mais%20sobre%20a%20aula%20em%20Dupla!" target="_blank" class="w-full py-3 rounded-xl bg-navy-800 hover:bg-usaRed text-slate-200 hover:text-white font-bold text-sm text-center border border-navy-700 transition-all" style="border: 1px solid #1D2A47; background-color: #121A2D;">
+                        Escolher Modalidade em Dupla
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 2: IELTS & TOEFL -->
+    <section id="ielts-toefl" class="py-24 px-6 bg-navy-900 border-y border-navy-800" style="background-color: #0A0F1D; border-top: 1px solid #121A2D; border-bottom: 1px solid #121A2D;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-usaBlue font-black text-xl md:text-2xl uppercase tracking-wider mb-6 glow-title">
+                    Abra as Portas do Mundo Acadêmico e Profissional
+                </p>
+                <h2 class="text-3xl md:text-5xl font-black text-white glow-title">Preparatório Especializado IELTS & TOEFL</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-navy-950 p-8 rounded-3xl border border-navy-700" style="background-color: #050811; border: 1px solid #1D2A47;">
+                <div class="space-y-4 text-slate-300 text-sm md:text-base leading-relaxed">
+                    <p class="text-white font-bold text-lg">
+                        Exames de proficiência em inglês são <span class="text-usaRed underline decoration-2">imprescindíveis</span> para quem deseja estudar ou trabalhar no exterior.
+                    </p>
+                    <p>
+                        O <strong>IELTS</strong> e o <strong>TOEFL</strong> são reconhecidos por mais de <strong>11.000 universidades e instituições de imigração</strong> globalmente.
+                    </p>
+                    <ul class="space-y-2 text-slate-300 text-sm">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400" style="color: #34d399;"></i> Treinamento focado nas 4 habilidades da prova (Speaking, Listening, Reading, Writing).</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400" style="color: #34d399;"></i> Estratégias de tempo e simulação de questões oficiais.</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400" style="color: #34d399;"></i> Acompanhamento individual das suas pontuações.</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-2xl bg-navy-900 border border-usaRed/40 text-center" style="background-color: #0A0F1D; border: 1px solid rgba(239, 68, 68, 0.4);">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-usaRed/20 text-usaRed flex items-center justify-center mb-3"><i data-lucide="award" class="w-6 h-6"></i></div>
+                    <h4 class="text-xl font-extrabold text-white mb-2">Vai Aplicar Para Faculdade Ou Imigração?</h4>
+                    <p class="text-slate-400 text-xs mb-6">Monte um plano de estudos específico para atingir a pontuação que a sua universidade exige.</p>
+                    <a href="https://wa.me/551236006887?text=Quero%20me%20preparar%20para%20o%20IELTS/TOEFL!" target="_blank" class="block w-full py-3 rounded-xl bg-usaRed hover:bg-red-600 text-white font-bold text-sm shadow-md transition-all" style="background-color: #EF4444; color: #ffffff;">
+                        Falar Sobre Preparatório
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3: CRONOGRAMA & REPOSIÇÕES -->
+    <section id="diferencial" class="py-24 px-6 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-usaRed font-black text-xl md:text-2xl uppercase tracking-wider mb-6 glow-title">
+                    Flexibilidade Feita Para a Sua Rotina Real
+                </p>
+                <h2 class="text-3xl md:text-5xl font-black text-white glow-title">2 Aulas Semanais + Reposição Garantida na Sexta</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-navy-900 border border-navy-700 text-center" style="background-color: #0A0F1D; border: 1px solid #1D2A47;">
+                <p class="text-slate-300 text-base mb-6">
+                    Sua rotina é corrida? Caso precise faltar por algum imprevisto na sua turma de <strong>Segunda e Quarta</strong> ou <strong>Terça e Quinta</strong>, você repõe o conteúdo na <strong>Sexta-feira da mesma semana</strong> via Teams!
+                </p>
+                <div class="inline-flex p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-bold items-center gap-3" style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
+                    <i data-lucide="calendar-check" class="w-6 h-6"></i> Reposição Garantida na Mesma Semana • Zero Prejuízo Didático
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 4: METODOLOGIA -->
+    <section id="metodologia" class="py-24 px-6 bg-navy-900 border-t border-navy-800" style="background-color: #0A0F1D; border-top: 1px solid #121A2D;">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-usaRed font-black text-xl md:text-2xl uppercase tracking-wider mb-4 glow-title">
+                    Metodologia + Acompanhamento Personalizado
+                </p>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-6 glow-title">
+                    Uma Experiência Que Vai Além do Livro
+                </h2>
+                <p class="text-slate-300 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+                    Entenda como nosso método prático desenvolve sua fluência real através das 4 habilidades essenciais, com suporte contínuo diretamente no seu WhatsApp e encontros ao vivo no Microsoft Teams.
+                </p>
+            </div>
+
+            <div class="space-y-4 mb-12">
+                <div class="accordion-item glass-card rounded-2xl border border-navy-700 p-6 transition-all">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between text-left font-black text-lg md:text-xl text-white">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="book-open" class="w-6 h-6 text-usaBlue"></i> 1. Como trabalhamos as 4 Habilidades (Speaking, Listening, Reading & Writing)
+                        </span>
+                        <i data-lucide="chevron-down" class="accordion-icon w-6 h-6 text-slate-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content text-slate-300 text-sm md:text-base leading-relaxed">
+                        Nas aulas ao vivo via Microsoft Teams, focamos ativamente na sua fala (*Speaking*) e escuta (*Listening*) desde o primeiro dia. As leituras (*Reading*) e produções escritas (*Writing*) recebem feedback individual e direto do professor para correção de vícios de linguagem.
+                    </div>
+                </div>
+
+                <div class="accordion-item glass-card rounded-2xl border border-navy-700 p-6 transition-all">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between text-left font-black text-lg md:text-xl text-white">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="file-text" class="w-6 h-6 text-usaRed"></i> 2. Material Didático Internacional em PDF no WhatsApp
+                        </span>
+                        <i data-lucide="chevron-down" class="accordion-icon w-6 h-6 text-slate-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content text-slate-300 text-sm md:text-base leading-relaxed">
+                        Receba antecipadamente todos os livros e PDFs de apoio internacionais direto no seu WhatsApp, prontos para abrir no celular, tablet ou computador.
+                    </div>
+                </div>
+
+                <div class="accordion-item glass-card rounded-2xl border border-navy-700 p-6 transition-all">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between text-left font-black text-lg md:text-xl text-white">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="video" class="w-6 h-6 text-emerald-400"></i> 3. Ambiente Corporativo & Interativo no Microsoft Teams
+                        </span>
+                        <i data-lucide="chevron-down" class="accordion-icon w-6 h-6 text-slate-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content text-slate-300 text-sm md:text-base leading-relaxed">
+                        Aulas 100% online conduzidas na plataforma corporativa mais utilizada pelas maiores multinacionais do mundo. Tenha gravação de aulas (quando aplicável), lousa digital compartilhada e ambiente ideal para simulações de entrevistas e reuniões de trabalho.
+                    </div>
+                </div>
+
+                <div class="accordion-item glass-card rounded-2xl border border-navy-700 p-6 transition-all">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between text-left font-black text-lg md:text-xl text-white">
+                        <span class="flex items-center gap-3">
+                            <i data-lucide="check-square" class="w-6 h-6 text-usaBlue"></i> 4. Exercícios Extras e Acompanhamento Individual
+                        </span>
+                        <i data-lucide="chevron-down" class="accordion-icon w-6 h-6 text-slate-400 transition-transform"></i>
+                    </button>
+                    <div class="accordion-content text-slate-300 text-sm md:text-base leading-relaxed">
+                        Além das aulas ao vivo, você recebe atividades práticas semanais para fixação de vocabulário e gramática contextualizada, mantendo seu cérebro em contato diário com o idioma sem sobrecarregar sua rotina.
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD FINAL -->
+            <div class="p-8 rounded-3xl bg-navy-950 border border-usaRed/50 text-center shadow-2xl relative overflow-hidden" style="background-color: #050811; border: 1px solid rgba(239, 68, 68, 0.5);">
+                <h3 class="text-2xl md:text-3xl font-black text-white mb-3">Pronto Para Começar Sua Jornada Fluente?</h3>
+                <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto mb-6">
+                    Agende agora sua conversa inicial gratuita sem compromisso ou faça nosso quiz para diagnosticar seu nível atual em menos de 2 minutos.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="https://wa.me/551236006887?text=Ol%C3%A1!%20Li%20sobre%20a%20metodologia%20e%20quero%20come%C3%A7ar%20agora." target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-usaRed hover:bg-red-600 text-white font-black text-base shadow-lg transition-all transform hover:scale-105" style="background-color: #EF4444; color: #ffffff;">
+                        🚀 Quero Começar Agora
+                    </a>
+                    <button onclick="openQuizModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-navy-800 hover:bg-navy-700 text-usaBlue border border-usaBlue/50 font-black text-base transition-all transform hover:scale-105 flex items-center justify-center gap-2" style="background-color: #121A2D; border: 1px solid rgba(37, 99, 235, 0.5); color: #2563EB;">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i> Fazer Quiz de Nivelamento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-10 bg-navy-950 border-t border-navy-800 text-center text-slate-400 text-xs md:text-sm leading-relaxed" style="background-color: #050811; border-top: 1px solid #121A2D;">
+        <div class="max-w-5xl mx-auto px-6 space-y-2">
+            <p class="font-bold text-white text-base">Inglês Inteligente • Ensino de Idiomas desde 2013</p>
+            <p>CNPJ: 18.647.981/0001-29 — Caraguatatuba - SP</p>
+            <p class="text-slate-500">© 2026 Fabio Moralles Roberti Costa. Todos os direitos reservados. WhatsApp: (12) 3600-6887</p>
+        </div>
+    </footer>
+
+    <!-- MODAL POP-UP DO QUIZ EM 2 ETAPAS (CAPTURA DE DADOS PRIMEIRO) -->
+    <div id="quizModal" class="fixed inset-0 bg-navy-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4" style="background-color: rgba(5, 8, 17, 0.90);">
+        <div class="bg-navy-900 border border-usaBlue/60 w-full max-w-3xl rounded-3xl p-6 md:p-8 shadow-2xl relative max-h-[90vh] flex flex-col" style="background-color: #0A0F1D; border: 1px solid rgba(37, 99, 235, 0.6);">
+            
+            <button onclick="closeQuizModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-navy-800 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Cabeçalho do Quiz -->
+            <div class="mb-4 pr-10">
+                <span class="px-3 py-1 rounded-full bg-usaBlue/20 text-usaBlue text-xs font-black uppercase tracking-wider border border-usaBlue/40">
+                    ⚡ Teste Situacional de Imersão
+                </span>
+                <h3 class="text-xl md:text-2xl font-black text-white mt-2">Diagnóstico de Nivelamento — Inglês Inteligente</h3>
+                
+                <!-- BARRA DE PROGRESSO DINÂMICA (Exibida na Etapa 2) -->
+                <div id="progressContainer" class="hidden w-full bg-navy-950 h-3 rounded-full mt-3 overflow-hidden border border-navy-700 relative">
+                    <div id="quizProgressBar" class="bg-gradient-to-r from-usaBlue to-usaRed h-full w-0 transition-all duration-300"></div>
+                </div>
+                <div id="progressTextContainer" class="hidden flex justify-between items-center text-[10px] font-bold text-slate-400 mt-1">
+                    <span id="progressText">0 de 20 questões respondidas</span>
+                    <span id="progressPercent" class="text-usaBlue">0% Concluído</span>
+                </div>
+            </div>
+
+            <!-- ETAPA 1: CAPTURA DE DADOS OBRIGATÓRIA -->
+            <div id="quizStep1" class="space-y-6 my-auto py-6">
+                <div class="p-6 rounded-2xl bg-navy-950 border border-navy-700 space-y-4" style="background-color: #050811;">
+                    <div class="text-center space-y-2">
+                        <div class="w-12 h-12 rounded-full bg-usaRed/20 text-usaRed mx-auto flex items-center justify-center">
+                            <i data-lucide="user-check" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-extrabold text-white">Informe seus dados para iniciar o teste</h4>
+                        <p class="text-xs text-slate-400">Suas respostas serão analisadas pelo Teacher Fabio para gerar seu diagnóstico personalizado.</p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs font-bold text-slate-300 mb-1 block">Nome Completo *</label>
+                            <input type="text" id="quizName" required placeholder="Digite seu nome completo" class="w-full p-3.5 rounded-xl bg-navy-900 border border-navy-700 text-white text-xs outline-none focus:border-usaBlue">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-300 mb-1 block">WhatsApp com DDD *</label>
+                            <input type="text" id="quizPhone" required placeholder="(12) 99999-9999" class="w-full p-3.5 rounded-xl bg-navy-900 border border-navy-700 text-white text-xs outline-none focus:border-usaBlue">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-300 mb-1 block">Seu Melhor E-mail *</label>
+                            <input type="email" id="quizEmail" required placeholder="seuemail@exemplo.com" class="w-full p-3.5 rounded-xl bg-navy-900 border border-navy-700 text-white text-xs outline-none focus:border-usaBlue">
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="goToStep2()" class="w-full py-4 rounded-xl bg-usaBlue hover:bg-blue-600 text-white font-black text-sm shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2" style="background-color: #2563EB;">
+                        🚀 Iniciar Teste de Nivelamento (20 Questões)
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 2: AS 20 QUESTÕES COM SEPARAÇÃO VISUAL -->
+            <form id="quizForm" class="hidden quiz-scroll overflow-y-auto pr-2 space-y-8 flex-1 my-2" onchange="updateProgressBar()">
+                
+                <!-- CENÁRIO 1: No Hotel -->
+                <div class="p-6 rounded-2xl bg-navy-950/80 border border-navy-800 space-y-6">
+                    <div class="border-b border-navy-700 pb-3 flex items-center gap-2">
+                        <span class="text-sm font-black text-usaRed uppercase tracking-wider">🏢 CENÁRIO 1: No Hotel (Check-in)</span>
+                    </div>
+                    
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">1. Receptionist: "Welcome! What's your last name, please?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q1" value="A"> (a) My last name is Costa.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q1" value="B"> (b) My last name are Costa.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q1" value="C"> (c) I has Costa.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q1" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">2. Receptionist: "Could you spell your first name for me?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q2" value="A"> (a) Yes, my name is F-A-B-I-O.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q2" value="B"> (b) Yes, it's F-A-B-I-O.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q2" value="C"> (c) Yes, I spelling F-A-B-I-O.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q2" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">3. Receptionist: "What is your phone number?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q3" value="A"> (a) I have 12 3600-6887.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q3" value="B"> (b) My number is 12 3600-6887.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q3" value="C"> (c) I am 12 3600-6887.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q3" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">4. Receptionist: "Here is your key. ____ you have many bags?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q4" value="A"> (a) Do</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q4" value="B"> (b) Are</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q4" value="C"> (c) Is</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q4" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-slate-200">5. Você quer saber o horário do café da manhã:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q5" value="A"> (a) What time is breakfast?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q5" value="B"> (b) What time is the breakfast served?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q5" value="C"> (c) When are breakfast?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q5" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENÁRIO 2: No Restaurante -->
+                <div class="p-6 rounded-2xl bg-navy-950/80 border border-navy-800 space-y-6">
+                    <div class="border-b border-navy-700 pb-3 flex items-center gap-2">
+                        <span class="text-sm font-black text-usaBlue uppercase tracking-wider">🍽️ CENÁRIO 2: No Restaurante</span>
+                    </div>
+                    
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">6. Garçom: "Are you ready to order your main course?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q6" value="A"> (a) Yes, I would like the grilled chicken, please.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q6" value="B"> (b) Yes, I am like the grilled chicken, please.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q6" value="C"> (c) Yes, I would liking the grilled chicken, please.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q6" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">7. Perguntar se o molho contém nozes (alergia):</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q7" value="A"> (a) Has this sauce nuts?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q7" value="B"> (b) Does this sauce contain nuts?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q7" value="C"> (c) Is this sauce have nuts?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q7" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">8. Garçom: "Would you like still or sparkling water?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q8" value="A"> (a) I wanting sparkling water, please.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q8" value="B"> (b) Sparkling water, please.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q8" value="C"> (c) I am prefer sparkling water.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q8" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">9. Pedir a conta ao garçom:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q9" value="A"> (a) Could I have the check, please?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q9" value="B"> (b) Could I having the check, please?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q9" value="C"> (c) Can I to check, please?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q9" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-slate-200">10. Perguntar se a gorjeta já está inclusa:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q10" value="A"> (a) Is the service includes?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q10" value="B"> (b) Is the service included?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q10" value="C"> (c) Does the service including?</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q10" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENÁRIO 3: Entrevista de Emprego (Business) -->
+                <div class="p-6 rounded-2xl bg-navy-950/80 border border-navy-800 space-y-6">
+                    <div class="border-b border-navy-700 pb-3 flex items-center gap-2">
+                        <span class="text-sm font-black text-emerald-400 uppercase tracking-wider">💼 CENÁRIO 3: Entrevista de Emprego (Business)</span>
+                    </div>
+                    
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">11. Entrevistador: "How long have you worked in International Operations?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q11" value="A"> (a) I have worked in this area for over 10 years.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q11" value="B"> (b) I has worked in this area for over 10 years.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q11" value="C"> (c) I am work in this area for over 10 years.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q11" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">12. Entrevistador: "When did you complete that logistics project?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q12" value="A"> (a) I have completed it in 2025.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q12" value="B"> (b) I completed it last year.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q12" value="C"> (c) I was complete it last year.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q12" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">13. Explicar que está acostumado a trabalhar sob pressão de prazos:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q13" value="A"> (a) I am used to working under pressure.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q13" value="B"> (b) I am used to work under pressure.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q13" value="C"> (c) I am use to worked under pressure.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q13" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">14. Reação caso um cliente discordasse da proposta:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q14" value="A"> (a) If a client disagree, I will call them.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q14" value="B"> (b) If a client disagreed, I would schedule a meeting to negotiate.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q14" value="C"> (c) If a client disagreeing, I would to call them.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q14" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-slate-200">15. Destacar responsabilidade por liderar equipes globais:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q15" value="A"> (a) I am responsible for lead global teams.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q15" value="B"> (b) I am responsible for leading global teams.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q15" value="C"> (c) I am responsible to leading global teams.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q15" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENÁRIO 4: No Estádio / Evento Social -->
+                <div class="p-6 rounded-2xl bg-navy-950/80 border border-navy-800 space-y-6">
+                    <div class="border-b border-navy-700 pb-3 flex items-center gap-2">
+                        <span class="text-sm font-black text-amber-400 uppercase tracking-wider">🏟️ CENÁRIO 4: No Estádio / Evento Social</span>
+                    </div>
+                    
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">16. Amigo: "The game is delayed! What a nightmare!"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q16" value="A"> (a) If we had checked the weather forecast, we wouldn't have come so early.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q16" value="B"> (b) If we checked the weather forecast, we won't come so early.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q16" value="C"> (c) If we have checked the weather, we didn't come so early.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q16" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">17. Amigo: "What's your take on the new player?"</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q17" value="A"> (a) He is good, but he needs to put up with his teammates.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q17" value="B"> (b) He is talented, but he needs to get along with the rest of the team.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q17" value="C"> (c) He is good, but he needs to look after the game.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q17" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">18. Analisar se vale a pena chamar um táxi no trânsito:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q18" value="A"> (a) Taking a taxi must to be a bad idea right now.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q18" value="B"> (b) Taking a taxi might take even longer than walking to the subway.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q18" value="C"> (c) Taking a taxi is taking longer if we walked.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q18" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 border-b border-navy-800/80 pb-5">
+                        <p class="text-xs font-bold text-slate-200">19. O que mais impressionou nas pessoas no exterior:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q19" value="A"> (a) What impressed me most was how welcoming people were.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q19" value="B"> (b) What impressed me most was how were welcoming people.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q19" value="C"> (c) What impressed me most is how welcoming people was.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q19" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-slate-200">20. Despedida com interesse em reencontrar em breve:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q20" value="A"> (a) I look forward to see you again next week.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q20" value="B"> (b) I look forward to seeing you again soon!</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q20" value="C"> (c) I look forward for see you again soon.</label>
+                            <label class="p-3 rounded-xl bg-navy-900 border border-navy-700 hover:border-usaBlue cursor-pointer flex items-center gap-2"><input type="radio" name="q20" value="D"> (d) Não sei.</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Botão Enviar (Visível na Etapa 2) -->
+            <div id="submitBtnContainer" class="hidden pt-3 border-t border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span class="text-xs text-slate-400">O Teacher Fabio analisará seu teste e retornará no seu WhatsApp.</span>
+                <button type="button" onclick="submitQuiz()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-usaRed hover:bg-red-600 text-white font-black text-sm shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2" style="background-color: #EF4444; color: #ffffff;">
+                    🚀 Enviar Respostas & Diagnóstico
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POP-UP ALERTA DE SUCESSO -->
+    <div id="successModal" class="fixed inset-0 bg-navy-950/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-navy-900 border border-emerald-500/50 max-w-md w-full p-8 rounded-3xl text-center space-y-4 shadow-2xl relative">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
+                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-2xl font-black text-white">Teste Recebido com Sucesso!</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                Parabéns pelo empenho! Suas respostas já foram computadas. O <strong class="text-white">Teacher Fabio</strong> entrará em contato via WhatsApp o mais rápido possível para apresentar seu diagnóstico detalhado.
+            </p>
+            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-xl bg-usaBlue hover:bg-blue-600 text-white font-bold text-sm transition-all" style="background-color: #2563EB;">
+                Entendido, Voltar ao Site
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        lucide.createIcons();
+
+        // COLE AQUI A SUA URL DO GOOGLE APPS SCRIPT
+        const GOOGLE_SCRIPT_URL = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
+
+        // GABARITO OFICIAL DAS 20 QUESTÕES
+        const answerKey = {
+            q1: "A", q2: "A", q3: "B", q4: "A", q5: "A",
+            q6: "A", q7: "B", q8: "B", q9: "A", q10: "B",
+            q11: "A", q12: "B", q13: "A", q14: "B", q15: "B",
+            q16: "A", q17: "B", q18: "B", q19: "A", q20: "B"
+        };
+
+        function openQuizModal() {
+            document.getElementById('quizModal').classList.remove('hidden');
+            // Reseta para a Etapa 1 ao abrir
+            document.getElementById('quizStep1').classList.remove('hidden');
+            document.getElementById('quizForm').classList.add('hidden');
+            document.getElementById('progressContainer').classList.add('hidden');
+            document.getElementById('progressTextContainer').classList.add('hidden');
+            document.getElementById('submitBtnContainer').classList.add('hidden');
+        }
+
+        function closeQuizModal() { document.getElementById('quizModal').classList.add('hidden'); }
+        function closeSuccessModal() { document.getElementById('successModal').classList.add('hidden'); }
+
+        function toggleAccordion(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+
+        function goToStep2() {
+            const name = document.getElementById('quizName').value.trim();
+            const phone = document.getElementById('quizPhone').value.trim();
+            const email = document.getElementById('quizEmail').value.trim();
+
+            if (!name || !phone || !email) {
+                alert('Por favor, preencha seu Nome, WhatsApp e E-mail para liberar o teste.');
+                return;
+            }
+
+            // Transição para Etapa 2
+            document.getElementById('quizStep1').classList.add('hidden');
+            document.getElementById('quizForm').classList.remove('hidden');
+            document.getElementById('progressContainer').classList.remove('hidden');
+            document.getElementById('progressTextContainer').classList.remove('hidden');
+            document.getElementById('submitBtnContainer').classList.remove('hidden');
+            
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const form = document.getElementById('quizForm');
+            let answered = 0;
+            for (let i = 1; i <= 20; i++) {
+                if (form['q' + i] && form['q' + i].value) answered++;
+            }
+            const percent = Math.round((answered / 20) * 100);
+            document.getElementById('quizProgressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = `${answered} de 20 questões respondidas`;
+            document.getElementById('progressPercent').innerText = `${percent}% Concluído`;
+        }
+
+        function submitQuiz() {
+            const name = document.getElementById('quizName').value.trim();
+            const phone = document.getElementById('quizPhone').value.trim();
+            const email = document.getElementById('quizEmail').value.trim();
+
+            const form = document.getElementById('quizForm');
+            let score = 0;
+            let payload = { name: name, phone: phone, email: email };
+
+            for (let i = 1; i <= 20; i++) {
+                const val = form['q' + i] ? form['q' + i].value : 'D';
+                payload['q' + i] = val;
+                if (val === answerKey['q' + i]) score++;
+            }
+
+            payload.score = score;
+            
+            // Nível Estimado
+            if (score <= 5) payload.level = "Iniciante (A1)";
+            else if (score <= 10) payload.level = "Básico / Pré-Intermediário (A2)";
+            else if (score <= 15) payload.level = "Intermediário (B1/B2)";
+            else payload.level = "Avançado (C1/C2)";
+
+            // Envio para o Google Apps Script / Sheets (se configurado)
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI") {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            }
+
+            closeQuizModal();
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
